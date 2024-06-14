@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Api\Admin\LoginController;
+use App\Http\Controllers\Api\Admin\CategoryController;
 use App\Http\Controllers\Api\Admin\UserController;
 use App\Http\Controllers\Api\Admin\SliderController;
 use App\Http\Controllers\Api\Admin\CustomerController;
@@ -23,6 +24,9 @@ Route::prefix('admin')->group(function () {
         
         // route logout
         Route::POST('/logout', [LoginController::class, 'logout'], ['as' => 'admin']);
+
+        // route category
+        Route::resource('/categories', CategoryController::class, ['except' => ['create', 'edit'], 'as' => 'admin']);
 
         // // route user
         // Route::resource('/users', UserController::class, ['except' => ['create', 'edit'], 'as' => 'admin']);
