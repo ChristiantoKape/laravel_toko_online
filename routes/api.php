@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\Admin\CategoryController;
 use App\Http\Controllers\Api\Admin\UserController;
 use App\Http\Controllers\Api\Admin\SliderController;
 use App\Http\Controllers\Api\Admin\CustomerController;
+use App\Http\Controllers\Api\Admin\ProductController;
 use App\Http\Controllers\Api\Admin\InvoiceController;
 
 Route::prefix('admin')->group(function () {
@@ -27,6 +28,9 @@ Route::prefix('admin')->group(function () {
 
         // route category
         Route::resource('/categories', CategoryController::class, ['except' => ['create', 'edit'], 'as' => 'admin']);
+
+        // route product
+        Route::resource('/products', ProductController::class, ['except' => ['create', 'edit'], 'as' => 'admin']);
 
         // // route user
         // Route::resource('/users', UserController::class, ['except' => ['create', 'edit'], 'as' => 'admin']);

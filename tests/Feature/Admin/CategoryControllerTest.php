@@ -10,7 +10,6 @@ use App\Models\Category;
 use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Tymon\JWTAuth\Facades\JWTAuth;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class CategoryControllerTest extends TestCase
@@ -36,7 +35,7 @@ class CategoryControllerTest extends TestCase
      * 
      * @return void
      */
-    public function test_it_should_return_a_list_of_categories(): void
+    public function test_should_return_a_list_of_categories(): void
     {
         Category::factory()->count(5)->create();
 
@@ -62,7 +61,7 @@ class CategoryControllerTest extends TestCase
      * 
      * @return void
      */
-    public function test_it_should_return_categories_with_search_query(): void
+    public function test_should_return_categories_with_search_query(): void
     {
         Category::factory()->create(['name' => 'Category One']);
         Category::factory()->create(['name' => 'Category Two']);
@@ -80,7 +79,7 @@ class CategoryControllerTest extends TestCase
      * 
      * @return void
      */
-    public function test_it_should_returns_empty_list_if_no_categories_found(): void
+    public function test_should_returns_empty_list_if_no_categories_found(): void
     {
         $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
             ->getJson('api/admin/categories');
@@ -100,7 +99,7 @@ class CategoryControllerTest extends TestCase
      * 
      * @return void
      */
-    public function test_it_should_store_a_new_category(): void
+    public function test_should_store_a_new_category(): void
     {
         $file = UploadedFile::fake()->image('category.jpg');
 
@@ -128,7 +127,7 @@ class CategoryControllerTest extends TestCase
      * 
      * @return void
      */
-    public function test_it_validates_when_creating_a_category(): void
+    public function test_validates_when_creating_a_category(): void
     {
         $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
                         ->postJson('/api/admin/categories', [
@@ -149,7 +148,7 @@ class CategoryControllerTest extends TestCase
      * 
      * @return void
      */
-    public function test_it_can_show_a_category_by_id(): void
+    public function test_can_show_a_category_by_id(): void
     {
         $category = Category::factory()->create();
 
@@ -174,7 +173,7 @@ class CategoryControllerTest extends TestCase
      * 
      * @return void
      */
-    public function test_it_should_returns_404_if_category_not_found(): void
+    public function test_should_returns_404_if_category_not_found(): void
     {
         $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
                         ->getJson('/api/admin/categories/10394');
@@ -186,12 +185,26 @@ class CategoryControllerTest extends TestCase
                 ]);
     }
 
+    public function test_should_return_404_for_nonexistent_product_on_update(): void
+    {
+        $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
+                        ->putJson('/api/admin/categories/10394', [
+                            'name' => 'Updated Category'
+                        ]);
+
+        $response->assertStatus(404)
+                ->assertJson([
+                    'success' => false,
+                    'message' => 'Data Category Tidak Ditemukan!'
+                ]);
+    }
+
     /**
      * Test to ensure a category can be updated without changing its image.
      * 
      * @return void
      */
-    public function test_it_can_update_a_category_without_image(): void
+    public function test_can_update_a_category_without_image(): void
     {
         $category = Category::factory()->create();
 
@@ -224,7 +237,7 @@ class CategoryControllerTest extends TestCase
      * 
      * @return void
      */
-    public function test_it_can_update_a_category_with_image(): void
+    public function test_can_update_a_category_with_image(): void
     {
         $category = Category::factory()->create();
 
@@ -252,7 +265,12 @@ class CategoryControllerTest extends TestCase
         Storage::disk('local')->assertExists('public/categories/' . $newImage->hashName());
     }
 
-    public function test_it_can_delete_a_category(): void
+    /**
+     * Test that a category can be deleted successfully.
+     * 
+     * @return void
+     */
+    public function test_can_delete_a_category(): void
     {
         $category = Category::factory()->create([
             'image' => 'categories/test_image.jpg',
@@ -279,7 +297,12 @@ class CategoryControllerTest extends TestCase
         Storage::disk('local')->assertMissing('public/categories/test_image.jpg');
     }
 
-    public function test_it_should_returns_404_on_delete_if_category_not_found(): void
+    /**
+     * Test that a 404 response is returned for a nonexistent category when deleting.
+     *
+     * @return void
+     */
+    public function test_should_returns_404_on_delete_if_category_not_found(): void
     {
         $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
                         ->deleteJson('/api/admin/categories/10394');

@@ -17,6 +17,7 @@ class ImageService
     {
         $filename = $file->hashName();
         $file->storeAs('public/' . $directory, $filename);
-        return $filename;
+        
+        return 'products/' . $filename;
     }
 }

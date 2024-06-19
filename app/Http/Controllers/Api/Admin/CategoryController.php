@@ -44,7 +44,7 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|unique:categories',
+            'name'  => 'required|unique:categories',
             'image' => 'required|image|mimes:jpeg,jpg,png|max:2048',
         ]);
 
@@ -57,8 +57,8 @@ class CategoryController extends Controller
 
         $category = Category::create([
             'image' => $path,
-            'name' => $request->name,
-            'slug' => \Str::slug($request->name),
+            'name'  => $request->name,
+            'slug'  => \Str::slug($request->name),
         ]);
 
         if ($category) {
@@ -95,44 +95,49 @@ class CategoryController extends Controller
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, $id)
     {
-        $validator = Validator::make($request->all(), [
-            'image' => 'image|mimes:jpeg,jpg,png|max:2048',
-            'name' => 'required|unique:categories,name,' . $category->id,
-        ]);
+        try {
+            $category = Category::findOrFail($id);
 
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
-
-        // check image update
-        if ($request->file('image')) {
-
-            // remove image
-            Storage::disk('local')->delete('public/categories/'.basename($category->image));
-
-            // upload image
-            $path = $this->imageService->uploadImage($request->file('image'), 'categories');
-
-            // update image
-            $category->update([
-                'image' => $path,
+            $validator = Validator::make($request->all(), [
+                'image' => 'image|mimes:jpeg,jpg,png|max:2048',
+                'name' => 'required|unique:categories,name,' . $category->id,
+            ]);
+    
+            if ($validator->fails()) {
+                return response()->json($validator->errors(), 422);
+            }
+    
+            $data = [
                 'name' => $request->name,
                 'slug' => \Str::slug($request->name),
-            ]);
+            ];
+    
+            // check image update
+            if ($request->file('image')) {
+    
+                // remove image
+                Storage::disk('local')->delete('public/categories/' . basename($category->image));
+    
+                // upload image
+                $path = $this->imageService->uploadImage($request->file('image'), 'categories');
+                $data['image'] = $path;
+            }
+    
+            $category->update($data);
+    
+            if ($category) {
+                return new CategoryResource(true, 'Data Category Berhasil Diupdate!', $category);
+            }
+    
+            return new CategoryResource(false, 'Data Category Gagal Diupdate!', null);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data Category Tidak Ditemukan!',
+            ], 404);
         }
-
-        $category->update([
-            'name' => $request->name,
-            'slug' => \Str::slug($request->name),
-        ]);
-
-        if ($category) {
-            return new CategoryResource(true, 'Data Category Berhasil Diupdate!', $category);
-        }
-
-        return new CategoryResource(false, 'Data Category Gagal Diupdate!', null);
     }
 
     /**
