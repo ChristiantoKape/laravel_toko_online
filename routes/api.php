@@ -35,13 +35,14 @@ Route::prefix('admin')->group(function () {
         // route invoice
         Route::resource('/invoices', InvoiceController::class, ['except' => ['create', 'store', 'edit', 'update', 'destroy'], 'as' => 'admin']);
         
+        // route customer
+        Route::GET('/customers', [CustomerController::class, 'index'], ['as' => 'admin']);
+        
         // // route user
         // Route::resource('/users', UserController::class, ['except' => ['create', 'edit'], 'as' => 'admin']);
 
         // // route slider
         // Route::resource('/sliders', SliderController::class, ['except' => ['create', 'edit', 'show', 'update'], 'as' => 'admin']);
 
-        // // route customer
-        // Route::GET('/customers', [CustomerController::class, 'index'], ['as' => 'admin']);
     });
 });
