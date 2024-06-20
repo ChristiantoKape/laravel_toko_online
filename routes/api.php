@@ -32,6 +32,9 @@ Route::prefix('admin')->group(function () {
         // route product
         Route::resource('/products', ProductController::class, ['except' => ['create', 'edit'], 'as' => 'admin']);
 
+        // route invoice
+        Route::resource('/invoices', InvoiceController::class, ['except' => ['create', 'store', 'edit', 'update', 'destroy'], 'as' => 'admin']);
+        
         // // route user
         // Route::resource('/users', UserController::class, ['except' => ['create', 'edit'], 'as' => 'admin']);
 
@@ -40,8 +43,5 @@ Route::prefix('admin')->group(function () {
 
         // // route customer
         // Route::GET('/customers', [CustomerController::class, 'index'], ['as' => 'admin']);
-
-        // // route invoice
-        // Route::resource('/invoices', InvoiceController::class, ['except' => ['create', 'store', 'edit', 'update', 'destroy'], 'as' => 'admin']);
     });
 });
