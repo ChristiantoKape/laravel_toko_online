@@ -28,6 +28,11 @@ class DashboardControllerTest extends TestCase
         $this->token = JWTAuth::fromUser($this->user);
     }
 
+    /**
+     * Test that the API returns a successful response for the dashboard
+     * 
+     * @return void
+     */
     public function test_should_return_successful_response(): void
     {
         $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
@@ -36,6 +41,11 @@ class DashboardControllerTest extends TestCase
         $response->assertStatus(200);
     }
 
+    /**
+     * Test that the API returns the correct JSON structure for the dashboard.
+     * 
+     * @return void
+     */
     public function test_should_returns_correct_structure(): void
     {
         $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
@@ -59,6 +69,12 @@ class DashboardControllerTest extends TestCase
                     ]
                 ]);
     }
+
+    /**
+     * Test that the API returns the correct counts and chart data for the dashboard.
+     * 
+     * @return void
+     */
     public function test_should_returns_correct_counts_and_chart_data(): void
     {
         $currentYear = date('Y');

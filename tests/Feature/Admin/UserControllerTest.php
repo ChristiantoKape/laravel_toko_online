@@ -29,6 +29,11 @@ class UserControllerTest extends TestCase
         $this->token = JWTAuth::fromUser($this->user);
     }
 
+    /**
+     * Test that the API fails to return a list of users when unauthenticated.
+     * 
+     * @return void
+     */
     public function test_should_fail_to_return_list_of_users_when_unauthenticated(): void
     {
         $response = $this->getJson('/api/admin/users');
@@ -39,6 +44,11 @@ class UserControllerTest extends TestCase
                 ]);
     }
 
+    /**
+     * Test that the API returns an empty list when no users exist.
+     * 
+     * @return void
+     */
     public function test_should_return_a_list_when_no_users_exists(): void
     {
         User::where('email', '!=', 'admin@testemail.com')->delete();
@@ -61,6 +71,11 @@ class UserControllerTest extends TestCase
                 ]);
     }
 
+    /**
+     * Test that the API returns a list of users without a search query.
+     *
+     * @return void
+     */
     public function test_should_return_a_list_without_search_query(): void
     {
         User::factory()->count(10)->create();
@@ -83,6 +98,11 @@ class UserControllerTest extends TestCase
                 ]);
     }
 
+    /**
+     * Test that the API returns a list of users with a search query.
+     *
+     * @return void
+     */
     public function test_should_return_a_list_with_search_query(): void
     {
         User::factory()->create(['name' => 'Jonathan Liandi']);
@@ -109,6 +129,11 @@ class UserControllerTest extends TestCase
                 ]);
     }
 
+    /**
+     * Test that the API fails to store a user with invalid data.
+     * 
+     * @return void
+     */
     public function test_should_fail_to_store_user_with_invalid_data(): void
     {
         $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
@@ -122,6 +147,11 @@ class UserControllerTest extends TestCase
                 ]);
     }
 
+    /**
+     * Test that the API successfully stores a user.
+     *
+     * @return void
+     */
     public function test_should_store_user_successfully(): void
     {
         $dataUser = [
@@ -145,6 +175,11 @@ class UserControllerTest extends TestCase
                 ]);
     }
 
+    /**
+     * Test that the API fails to show a non-existent user.
+     *
+     * @return void
+     */
     public function test_should_fail_to_show_non_existent_user(): void
     {
         $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
@@ -157,6 +192,11 @@ class UserControllerTest extends TestCase
                 ]);
     }
 
+    /**
+     * Test that the API shows user details.
+     *
+     * @return void
+     */
     public function test_should_show_user_details(): void
     {
         $user = User::factory()->create();
@@ -176,6 +216,11 @@ class UserControllerTest extends TestCase
                 ]);
     }
 
+    /**
+     * Test that the API returns a 404 status for a non-existent user during update
+     * 
+     * @return void
+     */
     public function test_should_return_404_for_nonexistent_user_on_update(): void
     {
         $updateUser = [
@@ -195,6 +240,11 @@ class UserControllerTest extends TestCase
                 ]);
     }
 
+    /**
+     * Test that the API successfully updates a user.
+     * 
+     * @return void
+     */
     public function test_should_update_user_successfully(): void
     {
         $user = User::factory()->create();
@@ -225,6 +275,11 @@ class UserControllerTest extends TestCase
         ]);
     }
 
+    /**
+     * Test that the API returns a 404 status for a non-existent user during deletion.
+     *
+     * @return void
+     */
     public function test_should_return_404_for_nonexistent_user_on_delete(): void
     {
         $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
@@ -237,6 +292,11 @@ class UserControllerTest extends TestCase
                 ]);
     }
 
+    /**
+     * Test that the API successfully deletes a user.
+     *
+     * @return void
+     */
     public function test_should_destroy_product_successfully():void
     {
         $user = User::factory()->create();
