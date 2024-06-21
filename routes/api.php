@@ -43,5 +43,8 @@ Route::prefix('admin')->group(function () {
         
         // route user
         Route::resource('/users', UserController::class, ['except' => ['create', 'edit'], 'as' => 'admin']);
+
+        // route dashboard
+        Route::GET('/dashboard', [App\Http\Controllers\Api\Admin\DashboardController::class, 'index', ['as' => 'admin']]);
     });
 });
