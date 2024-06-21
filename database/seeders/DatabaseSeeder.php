@@ -6,11 +6,11 @@ use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-use Database\Seeders\ProvinceSeeder;
-use Database\Seeders\CitySeeder;
 use Database\Seeders\UserSeeder;
 use Database\Seeders\CategorySeeder;
 use Database\Seeders\ProductSeeder;
+use Database\Seeders\InvoiceSeeder;
+use Database\Seeders\SliderSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             ProductSeeder::class,
             InvoiceSeeder::class,
+            SliderSeeder::class
         ]);
     }
 }
