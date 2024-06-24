@@ -11,6 +11,9 @@ use App\Http\Controllers\Api\Admin\CustomerController;
 use App\Http\Controllers\Api\Admin\ProductController;
 use App\Http\Controllers\Api\Admin\InvoiceController;
 
+// use App\Http\Controllers\Api\Customer\LoginController as CustomerLoginController;
+use App\Http\Controllers\Api\Customer\RegisterController;
+
 Route::prefix('admin')->group(function () {
     // route login
     Route::POST('/login', [LoginController::class, 'index'], ['as' => 'admin']);
@@ -46,5 +49,24 @@ Route::prefix('admin')->group(function () {
 
         // route dashboard
         Route::GET('/dashboard', [App\Http\Controllers\Api\Admin\DashboardController::class, 'index', ['as' => 'admin']]);
+    });
+});
+
+Route::prefix('customer')->group(function () {
+
+    Route::POST('/register', [RegisterController::class, 'store'], ['as' => 'customer']);
+
+    // Route::POST('/login', [CustomerLoginController::class, 'index'], ['as' => 'customer']);
+
+    Route::group(['middleware' => 'auth:api_customer'], function () {
+       
+        // data user
+        // Route::GET('/user', [CustomerLoginController::class, 'getUser'], ['as' => 'customer']);
+
+        // refreshToken
+        // Route::GET('/refresh', [CustomerLoginController::class, 'refreshToken'], ['as' => 'customer']);
+        
+        // route logout
+        // Route::POST('/logout', [CustomerLoginController::class, 'logout'], ['as' => 'customer']);
     });
 });
