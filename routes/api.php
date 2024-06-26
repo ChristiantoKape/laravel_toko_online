@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\Admin\ProductController;
 use App\Http\Controllers\Api\Admin\InvoiceController;
 
 use App\Http\Controllers\Api\Customer\LoginController as CustomerLoginController;
+use App\Http\Controllers\Api\Customer\InvoiceController as CustomerInvoiceController;
 use App\Http\Controllers\Api\Customer\RegisterController;
 
 Route::prefix('admin')->group(function () {
@@ -68,5 +69,8 @@ Route::prefix('customer')->group(function () {
         
         // route logout
         Route::POST('/logout', [CustomerLoginController::class, 'logout'], ['as' => 'customer']);
+
+        // route invoice
+        Route::resource('/invoices', CustomerInvoiceController::class, ['except' => ['create', 'store', 'edit', 'update', 'destroy'], 'as' => 'customer']);
     });
 });
