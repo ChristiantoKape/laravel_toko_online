@@ -75,5 +75,8 @@ Route::prefix('customer')->group(function () {
 
         // route reviews
         Route::POST('/review', [App\Http\Controllers\Api\Customer\ReviewController::class, 'store'], ['as' => 'customer']);
+
+        // route dashboard
+        Route::GET('/dashboard', [App\Http\Controllers\Api\Customer\DashboardController::class, 'index', ['as' => 'customer']]);
     });
 });
