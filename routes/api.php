@@ -72,5 +72,8 @@ Route::prefix('customer')->group(function () {
 
         // route invoice
         Route::resource('/invoices', CustomerInvoiceController::class, ['except' => ['create', 'store', 'edit', 'update', 'destroy'], 'as' => 'customer']);
+
+        // route reviews
+        Route::POST('/review', [App\Http\Controllers\Api\Customer\ReviewController::class, 'store'], ['as' => 'customer']);
     });
 });

@@ -24,7 +24,9 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             ProductSeeder::class,
             InvoiceSeeder::class,
-            SliderSeeder::class
+            SliderSeeder::class,
+            OrderSeeder::class,
+            ReviewSeeder::class,
         ]);
     }
 }
