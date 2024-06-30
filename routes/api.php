@@ -14,6 +14,10 @@ use App\Http\Controllers\Api\Admin\InvoiceController;
 use App\Http\Controllers\Api\Customer\LoginController as CustomerLoginController;
 use App\Http\Controllers\Api\Customer\InvoiceController as CustomerInvoiceController;
 use App\Http\Controllers\Api\Customer\RegisterController;
+use App\Http\Controllers\Api\Customer\DashboardController;
+use App\Http\Controllers\Api\Customer\ReviewController;
+
+use App\Http\Controllers\Api\Web\CategoryController as WebCategoryController;
 
 Route::prefix('admin')->group(function () {
     // route login
@@ -49,7 +53,7 @@ Route::prefix('admin')->group(function () {
         Route::resource('/users', UserController::class, ['except' => ['create', 'edit'], 'as' => 'admin']);
 
         // route dashboard
-        Route::GET('/dashboard', [App\Http\Controllers\Api\Admin\DashboardController::class, 'index', ['as' => 'admin']]);
+        Route::GET('/dashboard', [DashboardController::class, 'index', ['as' => 'admin']]);
     });
 });
 
@@ -74,9 +78,13 @@ Route::prefix('customer')->group(function () {
         Route::resource('/invoices', CustomerInvoiceController::class, ['except' => ['create', 'store', 'edit', 'update', 'destroy'], 'as' => 'customer']);
 
         // route reviews
-        Route::POST('/review', [App\Http\Controllers\Api\Customer\ReviewController::class, 'store'], ['as' => 'customer']);
+        Route::POST('/review', [ReviewController::class, 'store'], ['as' => 'customer']);
 
         // route dashboard
-        Route::GET('/dashboard', [App\Http\Controllers\Api\Customer\DashboardController::class, 'index', ['as' => 'customer']]);
+        Route::GET('/dashboard', [DashboardController::class, 'index', ['as' => 'customer']]);
     });
+});
+
+Route::prefix('web')->group(function () {
+    Route::resource('/categories', WebCategoryController::class, ['except' => ['create', 'store', 'edit', 'update', 'destroy'], 'as' => 'web']);
 });
