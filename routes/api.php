@@ -18,9 +18,11 @@ use App\Http\Controllers\Api\Customer\RegisterController;
 use App\Http\Controllers\Api\Customer\DashboardController as CustomerDashboardController;
 use App\Http\Controllers\Api\Customer\ReviewController;
 
+use App\Http\Controllers\Api\Web\RajaOngkirController;
 use App\Http\Controllers\Api\Web\CategoryController as WebCategoryController;
 use App\Http\Controllers\Api\Web\ProductController as WebProductController;
 use App\Http\Controllers\Api\Web\SliderController as WebSliderController;
+use App\Http\Controllers\Api\Web\CartController;
 
 Route::prefix('admin')->group(function () {
     // route login
@@ -100,9 +102,27 @@ Route::prefix('web')->group(function () {
     Route::resource('/sliders', WebSliderController::class, ['only' => ['index'], 'as' => 'web']);
 
     // route rajaongkir
-    Route::GET('/rajaongkir/provinces', [App\Http\Controllers\Api\Web\RajaOngkirController::class, 'getProvinces'], ['as' => 'web']);
+    Route::GET('/rajaongkir/provinces', [RajaOngkirController::class, 'getProvinces'], ['as' => 'web']);
 
-    Route::POST('/rajaongkir/cities', [App\Http\Controllers\Api\Web\RajaOngkirController::class, 'getCities'], ['as' => 'web']);
+    Route::POST('/rajaongkir/cities', [RajaOngkirController::class, 'getCities'], ['as' => 'web']);
 
-    Route::POST('/rajaongkir/checkOngkir', [App\Http\Controllers\Api\Web\RajaOngkirController::class, 'checkOngkir'], ['as' => 'web']);
+    Route::POST('/rajaongkir/checkOngkir', [RajaOngkirController::class, 'checkOngkir'], ['as' => 'web']);
+
+    Route::group(['middleware' => 'auth:api_customer'], function () {
+        
+        // GET Cart
+        Route::GET('/carts', [CartController::class, 'index'], ['as' => 'web']);
+
+        // POST Cart
+        Route::POST('/carts', [CartController::class, 'store'], ['as' => 'web']);
+
+        // GET Cart price
+        Route::GET('/carts/total_price', [CartController::class, 'getCartPrice'], ['as' => 'web']);
+
+        // GET Cart weight
+        Route::GET('/carts/total_weight', [CartController::class, 'getCartWeight'], ['as' => 'web']);
+
+        // REMOVE Cart
+        ROUTE::POST('/carts/remove', [CartController::class, 'removeCart'], ['as' => 'web']);
+    });
 });
