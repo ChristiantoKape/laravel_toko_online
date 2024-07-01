@@ -68,8 +68,6 @@ class CategoryWebControllerTest extends TestCase
 
         $response = $this->getJson('/api/web/categories/' . $category->slug);
 
-        $response->dump();
-
         $response->assertStatus(200)
                 ->assertJsonStructure([
                     'success',

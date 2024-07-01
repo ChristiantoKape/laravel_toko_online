@@ -10,11 +10,12 @@ use App\Http\Controllers\Api\Admin\SliderController;
 use App\Http\Controllers\Api\Admin\CustomerController;
 use App\Http\Controllers\Api\Admin\ProductController;
 use App\Http\Controllers\Api\Admin\InvoiceController;
+use App\Http\Controllers\Api\Admin\DashboardController;
 
 use App\Http\Controllers\Api\Customer\LoginController as CustomerLoginController;
 use App\Http\Controllers\Api\Customer\InvoiceController as CustomerInvoiceController;
 use App\Http\Controllers\Api\Customer\RegisterController;
-use App\Http\Controllers\Api\Customer\DashboardController;
+use App\Http\Controllers\Api\Customer\DashboardController as CustomerDashboardController;
 use App\Http\Controllers\Api\Customer\ReviewController;
 
 use App\Http\Controllers\Api\Web\CategoryController as WebCategoryController;
@@ -83,7 +84,7 @@ Route::prefix('customer')->group(function () {
         Route::POST('/review', [ReviewController::class, 'store'], ['as' => 'customer']);
 
         // route dashboard
-        Route::GET('/dashboard', [DashboardController::class, 'index', ['as' => 'customer']]);
+        Route::GET('/dashboard', [CustomerDashboardController::class, 'index', ['as' => 'customer']]);
     });
 });
 
@@ -97,4 +98,11 @@ Route::prefix('web')->group(function () {
 
     // route slider
     Route::resource('/sliders', WebSliderController::class, ['only' => ['index'], 'as' => 'web']);
+
+    // route rajaongkir
+    Route::GET('/rajaongkir/provinces', [App\Http\Controllers\Api\Web\RajaOngkirController::class, 'getProvinces'], ['as' => 'web']);
+
+    Route::POST('/rajaongkir/cities', [App\Http\Controllers\Api\Web\RajaOngkirController::class, 'getCities'], ['as' => 'web']);
+
+    Route::POST('/rajaongkir/checkOngkir', [App\Http\Controllers\Api\Web\RajaOngkirController::class, 'checkOngkir'], ['as' => 'web']);
 });
