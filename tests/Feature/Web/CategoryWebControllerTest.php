@@ -73,45 +73,45 @@ class CategoryWebControllerTest extends TestCase
         $response->dump();
 
         $response->assertStatus(200)
-        ->assertJsonStructure([
-            'success',
-            'message',
-            'data' => [
-                'id',
-                'name',
-                'slug',
-                'image',
-                'created_at',
-                'updated_at',
-                'products' => [
-                    '*' => [
+                ->assertJsonStructure([
+                    'success',
+                    'message',
+                    'data' => [
                         'id',
-                        'category_id',
-                        'user_id',
-                        'image',
-                        'title',
+                        'name',
                         'slug',
-                        'description',
-                        'weight',
-                        'price',
-                        'stock',
-                        'discount',
+                        'image',
                         'created_at',
                         'updated_at',
-                        'reviews_count',
-                        'reviews_avg_rating',
-                        'category' => [
-                            'id',
-                            'name',
-                            'slug',
-                            'image',
-                            'created_at',
-                            'updated_at',
+                        'products' => [
+                            '*' => [
+                                'id',
+                                'category_id',
+                                'user_id',
+                                'image',
+                                'title',
+                                'slug',
+                                'description',
+                                'weight',
+                                'price',
+                                'stock',
+                                'discount',
+                                'created_at',
+                                'updated_at',
+                                'reviews_count',
+                                'reviews_avg_rating',
+                                'category' => [
+                                    'id',
+                                    'name',
+                                    'slug',
+                                    'image',
+                                    'created_at',
+                                    'updated_at',
+                                ]
+                            ]
                         ]
                     ]
-                ]
-            ]
-        ]);
+                ]);
     }
 
     /**

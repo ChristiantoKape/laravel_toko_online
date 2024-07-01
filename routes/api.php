@@ -18,6 +18,7 @@ use App\Http\Controllers\Api\Customer\DashboardController;
 use App\Http\Controllers\Api\Customer\ReviewController;
 
 use App\Http\Controllers\Api\Web\CategoryController as WebCategoryController;
+use App\Http\Controllers\Api\Web\ProductController as WebProductController;
 
 Route::prefix('admin')->group(function () {
     // route login
@@ -86,5 +87,10 @@ Route::prefix('customer')->group(function () {
 });
 
 Route::prefix('web')->group(function () {
+
+    // route category
     Route::resource('/categories', WebCategoryController::class, ['except' => ['create', 'store', 'edit', 'update', 'destroy'], 'as' => 'web']);
+
+    // route product
+    Route::resource('/products', WebProductController::class, ['except' => ['create', 'store', 'edit', 'update', 'destroy'], 'as' => 'web']);
 });
