@@ -19,6 +19,7 @@ use App\Http\Controllers\Api\Customer\ReviewController;
 
 use App\Http\Controllers\Api\Web\CategoryController as WebCategoryController;
 use App\Http\Controllers\Api\Web\ProductController as WebProductController;
+use App\Http\Controllers\Api\Web\SliderController as WebSliderController;
 
 Route::prefix('admin')->group(function () {
     // route login
@@ -93,4 +94,7 @@ Route::prefix('web')->group(function () {
 
     // route product
     Route::resource('/products', WebProductController::class, ['except' => ['create', 'store', 'edit', 'update', 'destroy'], 'as' => 'web']);
+
+    // route slider
+    Route::resource('/sliders', WebSliderController::class, ['only' => ['index'], 'as' => 'web']);
 });

@@ -38,8 +38,7 @@ class ProductWebControllerTest extends TestCase
     {
         $reviews = Review::factory()->count(5)->create();
 
-        $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
-                         ->getJson('/api/web/products');
+        $response = $this->getJson('/api/web/products');
 
         $response->assertStatus(200)
                 ->assertJsonStructure([
@@ -87,8 +86,7 @@ class ProductWebControllerTest extends TestCase
     {
         $product = Product::factory()->count(10)->create();
 
-        $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
-                         ->getJson('/api/web/products?q=' . $product->first()->title);
+        $response = $this->getJson('/api/web/products?q=' . $product->first()->title);
 
         $response->assertStatus(200)
                 ->assertJsonFragment([
@@ -106,8 +104,7 @@ class ProductWebControllerTest extends TestCase
         $product = Product::factory()->create();
         $reviews = Review::factory()->count(5)->create(['product_id' => $product->id]);
 
-        $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
-                         ->getJson('/api/web/products/' . $product->slug);
+        $response = $this->getJson('/api/web/products/' . $product->slug);
 
         $response->assertStatus(200)
                 ->assertJsonStructure([
@@ -146,8 +143,7 @@ class ProductWebControllerTest extends TestCase
      */
     public function test_returns_404_if_products_not_found()
     {
-        $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
-                         ->getJson('/api/web/products/unknown-product');
+        $response = $this->getJson('/api/web/products/unknown-product');
 
         $response->assertStatus(404)
                 ->assertJson([

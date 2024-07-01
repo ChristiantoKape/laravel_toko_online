@@ -38,8 +38,7 @@ class CategoryWebControllerTest extends TestCase
     {
         Category::factory()->count(5)->create();
 
-        $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
-                         ->getJson('/api/web/categories');
+        $response = $this->getJson('/api/web/categories');
 
         $response->assertStatus(200)
                 ->assertJsonStructure([
@@ -67,8 +66,7 @@ class CategoryWebControllerTest extends TestCase
         $product = Product::factory()->create(['category_id' => $category->id]);
         Review::factory()->count(5)->create(['product_id' => $product->id, 'rating' => 4]);
 
-        $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
-                         ->getJson('/api/web/categories/' . $category->slug);
+        $response = $this->getJson('/api/web/categories/' . $category->slug);
 
         $response->dump();
 
@@ -121,8 +119,7 @@ class CategoryWebControllerTest extends TestCase
      */
     public function test_returns_error_if_category_not_found()
     {
-        $response = $this->withHeader('Authorization', 'Bearer ' . $this->token)
-                         ->getJson('/api/web/categories/unknown-category');
+        $response = $this->getJson('/api/web/categories/unknown-category');
 
         $response->assertStatus(404)
                 ->assertJson([
